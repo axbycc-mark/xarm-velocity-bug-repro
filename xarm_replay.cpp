@@ -37,7 +37,7 @@ using M_Vector7f = Eigen::Map<Eigen::Vector7f>;
 const auto PROCESS_START_TIME = std::chrono::steady_clock::now();
 uint64_t get_process_time_us() {
     return std::chrono::duration_cast<std::chrono::microseconds>(
-        std::chrono::steady_clock::now() - PROCESS_START_TIME)
+               std::chrono::steady_clock::now() - PROCESS_START_TIME)
         .count();
 }
 
@@ -48,9 +48,9 @@ struct TrajectoryPoint {
 };
 
 std::vector<TrajectoryPoint> read_trajectory_points() {
-    std::ifstream desiredQFile("/home/axby/qs.txt");
-    std::ifstream desiredQDotFile("/home/axby/qdots.txt");
-    std::ifstream timeFile("/home/axby/times_us.txt");
+    std::ifstream desiredQFile(desired_q_path);
+    std::ifstream desiredQDotFile(desired_qdot_path);
+    std::ifstream timeFile(times_us_path);
 
     // Read time_us.txt
     std::vector<uint64_t> time_us_data;
