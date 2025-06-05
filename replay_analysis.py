@@ -1,11 +1,16 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import argparse
 
 # ================== CONFIG ========================
 times_us_path = "/home/axby/times_us.txt";
 commanded_qdots_path = "/home/axby/commanded_qdots.txt";
 actual_qdots_path = "/home/axby/actual_qdots.txt";
 # ===================================================
+
+parser = argparse.ArgumentParser("Replay Analysis")
+parser.add_argument("--separate-plots", action="store_true", default=False)
+args = parser.parse_args()
 
 with open(times_us_path, "r") as f:
     lines = f.readlines()
@@ -21,9 +26,21 @@ with open(actual_qdots_path, "r") as f:
 
 ts = times_us/1e6
 
-colors = ['red', 'green', 'blue', 'maroon', 'purple', 'gray', 'orange']
+if args.separate_plots:
+    plt.figure(figsize=(12, 8))
+    for i in range(7):
+        plt.subplot(4, 2, i+1)  # 4x2 grid to accommodate 7 joints
+        plt.plot(ts, commanded_qdots[:,i], label=f'Joint {i} Desired', linestyle='--')
+        plt.plot(ts, actual_qdots[:,i], label=f'Joint {i} Actual')
+        plt.xlabel('Time (s)')
+        plt.ylabel('q̇')
+        plt.legend()
+        plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+else:
+    colors = ['red', 'green', 'blue', 'maroon', 'purple', 'gray', 'orange']
 
-if True:
     # qdots
     legend = []
     for i in range(7):
